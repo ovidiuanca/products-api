@@ -12,6 +12,16 @@ Rails version: 5.2.3
 
 `docker-compose run web rake db:create db:migrate`
 
-## Start Application
+# Start Application
 
 `docker-compose up`
+
+# Tests
+
+## Migrate Test DB
+
+`docker-compose run -e "RAILS_ENV=test" web rake db:migrate`
+
+## Run tests
+
+`docker-compose run web rspec`
