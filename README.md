@@ -10,7 +10,7 @@ Rails version: 5.2.3
 
 ## Create and Migrate DB
 
-`docker-compose run web rake db:create db:migrate`
+`docker-compose run web rake db:create db:migrate db:seed`
 
 # Start Application
 
