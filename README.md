@@ -1,24 +1,17 @@
-# README
+Ruby version: 2.6.1
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails version: 5.2.3
 
-Things you may want to cover:
+# Install
 
-* Ruby version
+## Build Docker Image
 
-* System dependencies
+`docker-compose build`
 
-* Configuration
+## Create and Migrate DB
 
-* Database creation
+`docker-compose run web rake db:create db:migrate`
 
-* Database initialization
+## Start Application
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`docker-compose up`
