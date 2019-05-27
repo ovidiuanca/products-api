@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :product do |p|
-    name { 'Samsung Monitor' }
+    sequence(:name) { |n| "Samsung Monitor ##{n}" }
     price { 100 }
     category { 'Electronics' }
   end
