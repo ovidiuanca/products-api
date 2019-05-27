@@ -2,21 +2,30 @@ require 'rails_helper'
 
 RSpec.describe Api::ProductsController do
   describe 'GET #index' do
-    before do
-      FactoryBot.create_list(:product, 5)
-      get :index
-    end
+    let!(:products) { FactoryBot.create_list(:product, 5) }
 
     it 'should return all products' do
+      get :index
+
       json_response = JSON.parse(response.body)
 
       expect(response).to have_http_status(200)
       expect(json_response['data'].length).to eq(5)
     end
+
+    it 'should return the products filtered by name' do
+      get :index, params: { filter: { name: products.first.name } }
+
+      json_response = JSON.parse(response.body)
+
+      expect(response).to have_http_status(200)
+      expect(json_response['data'].length).to eq(1)
+      expect(json_response['data'][0]['attributes']['name']).to eq(products.first.name)
+    end
   end
 
   describe 'GET #show' do
-    let(:product) { FactoryBot.create(:product) }
+    let!(:product) { FactoryBot.create(:product) }
 
     before do
       get :show, params: { id: product.id }

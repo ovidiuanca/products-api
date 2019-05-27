@@ -5,6 +5,8 @@ module Api
     attribute :date_added, delegate: :created_at
     attribute :date_updated, delegate: :updated_at
 
+    filter :name
+
     def self.updatable_fields(context)
       super - [:name]
     end
