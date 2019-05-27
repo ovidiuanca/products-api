@@ -108,30 +108,63 @@ RSpec.describe Api::ProductsController do
   end
 
   describe 'PUT #update' do
-    let(:product) { FactoryBot.create(:product) }
-    let(:params) do
-      {
-        "id": product.id,
-        "data": {
-          "type": "products",
+    let(:product) { FactoryBot.create(:product,
+                                      name: 'Thinking Fast and Slow',
+                                      price: 100,
+                                      category: 'Books') }
+    context 'when update params are valid' do
+      let(:params) do
+        {
           "id": product.id,
-          "attributes": {
-            "price": 15,
+          "data": {
+            "type": "products",
+            "id": product.id,
+            "attributes": {
+              "price": 15,
+              "category": "Electronics"
+            }
           }
         }
-      }
+      end
+
+      before do
+        request.env['CONTENT_TYPE'] = 'application/vnd.api+json'
+        put :update, params: params
+      end
+
+      it 'should return product with changed property' do
+        json_response = JSON.parse(response.body)
+
+        expect(response).to have_http_status(200)
+        expect(json_response['data']['attributes']['price']).to eq(15)
+        expect(json_response['data']['attributes']['category']).to eq('Electronics')
+      end
     end
 
-    before do
-      request.env['CONTENT_TYPE'] = 'application/vnd.api+json'
-      put :update, params: params
-    end
+    context 'when update params are not valid' do
+      let(:params) do
+        {
+          "id": product.id,
+          "data": {
+            "type": "products",
+            "id": product.id,
+            "attributes": {
+              "name": "Clean Code"
+            }
+          }
+        }
+      end
 
-    it 'should return product with changed property' do
-      json_response = JSON.parse(response.body)
+      before do
+        request.env['CONTENT_TYPE'] = 'application/vnd.api+json'
+        put :update, params: params
+      end
 
-      expect(response).to have_http_status(200)
-      expect(json_response['data']['attributes']['price']).to eq(15)
+      it 'should return bad request' do
+        json_response = JSON.parse(response.body)
+
+        expect(response).to have_http_status(400)
+      end
     end
   end
 
